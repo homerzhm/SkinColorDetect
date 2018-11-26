@@ -21,6 +21,8 @@ def color_distance(rgb1, rgb2):
 
     return delta_e
 
+
+
 class FoundationMatch:
     foundation_data = {}
 
@@ -39,16 +41,35 @@ class FoundationMatch:
         distant = None
         result = None
 
+        record = {}
+
         for key in self.foundation_data:
             data = self.foundation_data[key]
             data_color = data["colors"]
             d = color_distance(color, data_color)
+            record[key] = d
             if distant is None:
                 distant = d
                 result = data
             elif distant > d:
                 distant = d
                 result = data
+        print(record)
+        return result
+
+    def sorted_cat_of_color(self, color):
+        result = []
+        for key in self.foundation_data:
+            data = self.foundation_data[key]
+            data_color = data["colors"]
+            d = color_distance(color, data_color)
+            data["distance"] = d
+            result.append(data)
+
+        def _sort(elem):
+            return elem["distance"]
+
+        result.sort(key=_sort)
 
         return result
 

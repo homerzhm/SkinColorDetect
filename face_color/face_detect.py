@@ -178,10 +178,18 @@ if __name__ == '__main__':
             plain_image_2 = draw_plain_color(rgb_color=h)
             cv2.imshow("highest", plain_image_2)
 
-            found = match.found_cat_of_color(h)
-            image_path = found["imagePath"]
-            found_match = cv2.imread(image_path)
-            cv2.imshow("matched_make_up", found_match)
+            # found = match.found_cat_of_color(h)
+            # image_path = found["imagePath"]
+            # found_match = cv2.imread(image_path)
+            # cv2.imshow("matched_make_up", found_match)
+
+            all_found = match.sorted_cat_of_color(h)
+            index = 0
+            for item in all_found[:5]:
+                image_path = item["imagePath"]
+                found_match = cv2.imread(image_path)
+                cv2.imshow("matched_make_up_" + str(index), found_match)
+                index += 1
 
             waitkey = cv2.waitKey(5)
             if waitkey != -1:
@@ -189,7 +197,7 @@ if __name__ == '__main__':
 
     else:
 
-        test2 = cv2.imread('../image_asset/071249078747_T4.jpg')
+        test2 = cv2.imread('test15.png')
         img_col = test2
         shapes_found = dnn_get_face(img_col)
         face = face_with_image(img_col, shapes_found[0])
@@ -203,5 +211,15 @@ if __name__ == '__main__':
 
         plain_image_2 = draw_plain_color(rgb_color=h)
         cv2.imshow("highest", plain_image_2)
+
+        all_found = match.sorted_cat_of_color(h)
+        print(all_found)
+        index = 0
+        for item in all_found[:5]:
+            image_path = item["imagePath"]
+            found_match = cv2.imread(image_path)
+            cv2.imshow("matched_make_up_" + str(index), found_match)
+            index += 1
+
 
         cv2.waitKey()
