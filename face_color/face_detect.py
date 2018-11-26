@@ -157,7 +157,7 @@ if __name__ == '__main__':
     from datas import FoundationMatch
 
     match = FoundationMatch()
-    use_camera = False
+    use_camera = True
 
     if use_camera:
         cam = cv2.VideoCapture(0)
@@ -197,7 +197,7 @@ if __name__ == '__main__':
 
     else:
 
-        test2 = cv2.imread('test15.png')
+        test2 = cv2.imread('test20.png')
         img_col = test2
         shapes_found = dnn_get_face(img_col)
         face = face_with_image(img_col, shapes_found[0])
