@@ -3,9 +3,7 @@ import cv2
 from sklearn.cluster import KMeans
 import imutils
 import numpy as np
-
 import os
-
 
 def find_histogram(clt):
     """
@@ -60,9 +58,9 @@ def draw_plain_color(width=50, height=50, rgb_color=(0, 0, 0)):
 
 
 def dnn_get_face(image):
-
-    protoPath = "deploy.prototxt"
-    modelPath = "res10_300x300_ssd_iter_140000.caffemodel"
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    protoPath = os.path.join(dir_path, "deploy.prototxt")
+    modelPath = os.path.join(dir_path, "res10_300x300_ssd_iter_140000.caffemodel")
     detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
     image = imutils.resize(image, width=600)
@@ -126,7 +124,7 @@ def get_dominate_colors(image):
     return highest_colors
 
 
-def get_highest_color(colors):
+def get_highest_color(highest_colors):
     h_c = None
     h_p = None
     for (persentage, color_result) in highest_colors:
@@ -139,8 +137,26 @@ def get_highest_color(colors):
     return h_c
 
 
-if __name__ == '__main__':
+def get_main_colors(image_path=None, image=None):
 
+    img_col = None
+    if image is not None:
+        img_col = image
+    else:
+        img_col = cv2.imread(image_path)
+
+    assert isinstance(img_col, np.ndarray), 'image must be a numpy array'
+
+    shapes_found = dnn_get_face(img_col)
+    face = face_with_image(img_col, shapes_found[0])
+    highest_colors = get_dominate_colors(face)
+    return highest_colors
+
+
+if __name__ == '__main__':
+    from datas import FoundationMatch
+
+    match = FoundationMatch()
     use_camera = False
 
     if use_camera:
@@ -156,12 +172,16 @@ if __name__ == '__main__':
             origin_i = draw_square_on_image(img_col, shapes_found[0])
             cv2.imshow("origin", origin_i)
 
-
             highest_colors = get_dominate_colors(face)
             h = get_highest_color(highest_colors)
 
             plain_image_2 = draw_plain_color(rgb_color=h)
             cv2.imshow("highest", plain_image_2)
+
+            found = match.found_cat_of_color(h)
+            image_path = found["imagePath"]
+            found_match = cv2.imread(image_path)
+            cv2.imshow("matched_make_up", found_match)
 
             waitkey = cv2.waitKey(5)
             if waitkey != -1:

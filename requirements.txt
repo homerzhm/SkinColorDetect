@@ -4,3 +4,4 @@ flask-apispec
 numpy
 sklearn
 imutils
+colormath
