@@ -1,3 +1,6 @@
 opencv-python
 Flask
 flask-apispec
+numpy
+sklearn
+imutils
