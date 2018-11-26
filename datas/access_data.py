@@ -76,8 +76,6 @@ class FoundationMatch:
 
 if __name__ == '__main__':
 
-    color_distance(rgb1=(201.9367263236441, 158.10063385535145, 129.21920208800913), rgb2=(195.53536977489696, 157.30376394933043, 135.23467940232484))
-    exit()
     from face_color import get_main_colors, rgb_to_hex
 
     foundations_path = os.path.join(dir_path, 'foundations')

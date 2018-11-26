@@ -166,6 +166,10 @@ if __name__ == '__main__':
             ret, img_col = cam.read()
 
             shapes_found = dnn_get_face(img_col)
+
+            if len(shapes_found) == 0:
+                continue
+
             face = face_with_image(img_col, shapes_found[0])
             cv2.imshow("face", face)
 
